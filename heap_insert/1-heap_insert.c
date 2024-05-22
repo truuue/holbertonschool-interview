@@ -71,21 +71,17 @@ void swap(heap_t **arg_node, heap_t **arg_child)
 	int left_right;
 
 	node = *arg_node, child = *arg_child;
-
 	if (child->n > node->n)
 	{
 		if (child->left)
 			child->left->parent = node;
 		if (child->right)
 			child->right->parent = node;
-
 		if (node->left == child)
 			node_child = node->right, left_right = 0;
 		else
 			node_child = node->left, left_right = 1;
-
 		node_left = child->left, node_right = child->right;
-
 		if (left_right == 0)
 		{
 			child->right = node_child;
@@ -100,7 +96,6 @@ void swap(heap_t **arg_node, heap_t **arg_child)
 				node_child->parent = child;
 			child->right = node;
 		}
-
 		if (node->parent)
 		{
 			if (node->parent->left == node)
@@ -108,7 +103,6 @@ void swap(heap_t **arg_node, heap_t **arg_child)
 			else
 				node->parent->right = child;
 		}
-
 		parent = node->parent, child->parent = parent;
 		node->parent = child, node->left = node_left;
 		node->right = node_right, *arg_node = child;
