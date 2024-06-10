@@ -1,4 +1,4 @@
-#include "list.h"
+#include "lists.h"
 
 /**
  * This file contains the implementation of the function is_palindrome,
