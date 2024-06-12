@@ -1,40 +1,33 @@
 #include "lists.h"
 
 /**
- * This file contains the implementation of the function is_palindrome,
- * which checks if a linked list is a palindrome.
+ * is_palindrome - vérifie si une liste chaînée est un palindrome
+ * @head: pointeur vers le pointeur du premier noeud de la liste listint_t
+ * Return: 0 si ce n'est pas un palindrome, 1 si c'est un palindrome
  */
 int is_palindrome(listint_t **head)
 {
-	if (*head == NULL || (*head)->next == NULL)
-	{
-		return (1);
-	}
+	listint_t *current;
+	int i, j, len;
+	int arr[10];
 
-	int size = 0;
-	listint_t *current = *head;
+	if (*head == NULL)
+		return (1);
+
+	current = *head;
+	len = 0;
 
 	while (current != NULL)
 	{
-		size++;
+		arr[len] = current->n;
 		current = current->next;
+		len++;
 	}
 
-	int arr[size];
-
-	current = *head;
-	for (int i = 0; i < size; i++)
-	{
-		arr[i] = current->n;
-		current = current->next;
-	}
-
-	for (int i = 0, j = size - 1; i < j; i++, j--)
+	for (i = 0, j = len - 1; i < len / 2; i++, j--)
 	{
 		if (arr[i] != arr[j])
-		{
 			return (0);
-		}
 	}
 
 	return (1);
