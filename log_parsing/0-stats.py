@@ -1,8 +1,10 @@
 #!/usr/bin/python3
 import sys
+""" Module to parse logs """
 
 
 def parse_logs():
+    """ Function to parse logs """
     total_size = 0
     status_codes = {200: 0, 301: 0, 400: 0,
                     401: 0, 403: 0, 404: 0, 405: 0, 500: 0}
@@ -35,4 +37,5 @@ def parse_logs():
 
 
 if __name__ == "__main__":
+    """ Main Function """
     parse_logs()
