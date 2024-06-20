@@ -1,13 +1,8 @@
 #!/usr/bin/python3
 import sys
 
-"""
-Module to parse logs and report statistics on HTTP status codes and total file size.
-"""
-
 
 def parse_logs():
-    """Function to parse logs from stdin and print statistics"""
     total_size = 0
     status_codes = {200: 0, 301: 0, 400: 0,
                     401: 0, 403: 0, 404: 0, 405: 0, 500: 0}
