@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 
-""" script qui lit l'entrée standard ligne par ligne et calcule des métriques """
+"""
+script qui lit l'entrée standard ligne par ligne et calcule des métriques
+"""
 # Ceci est une docstring qui décrit ce que fait le script
 
 import sys
@@ -59,10 +61,10 @@ try:
             # Début du bloc try interne
 
             size += int(stlist[-1])
-            # Ajoute le dernier mot de la liste à la taille (après conversion en entier)
+            # Ajoute le dernier mot de la liste à la taille
 
-        except:
-            # Si une exception est levée
+        except ValueError:
+            # Si une exception ValueError est levée
 
             pass
             # Ignore l'exception
@@ -71,13 +73,15 @@ try:
             # Début d'un autre bloc try interne
 
             if stlist[-2] in sts:
-                # Si l'avant-dernier mot de la liste est une clé du dictionnaire
+                # Si l'avant-dernier mot de la liste
+                # est une clé du dictionnaire
 
                 sts[stlist[-2]] += 1
-                # Incrémente la valeur associée à cette clé dans le dictionnaire
+                # Incrémente la valeur associée
+                # à cette clé dans le dictionnaire
 
-        except:
-            # Si une exception est levée
+        except IndexError:
+            # Si une exception IndexError est levée
 
             pass
             # Ignore l'exception
@@ -86,7 +90,8 @@ try:
     # Appelle la fonction printsts
 
 except KeyboardInterrupt:
-    # Si une exception KeyboardInterrupt est levée (lorsque l'utilisateur appuie sur Ctrl+C)
+    # Si une exception KeyboardInterrupt est levée
+    # (lorsque l'utilisateur appuie sur Ctrl+C)
 
     printsts(sts, size)
     # Appelle la fonction printsts
