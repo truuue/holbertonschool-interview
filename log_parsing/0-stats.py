@@ -12,7 +12,7 @@ def printsts(dic, size):
     """ Affiche les informations """
     # Ceci est une fonction qui affiche les informations
 
-    print("Taille du fichier: {:d}".format(size))
+    print("File size: {:d}".format(size))
     # Affiche la taille du fichier
 
     for i in sorted(dic.keys()):
