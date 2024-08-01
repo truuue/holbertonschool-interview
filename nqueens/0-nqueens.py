@@ -3,8 +3,9 @@
 import sys
 
 
-def print_usage_and_exit(message):
-    print(message)
+def print_usage_and_exit(message=None):
+    if message:
+        print(message)
     print("Usage: nqueens N")
     sys.exit(1)
 
@@ -13,10 +14,12 @@ def is_valid(N):
     try:
         N = int(N)
     except ValueError:
-        print_usage_and_exit("N must be a number")
+        print("N must be a number")
+        sys.exit(1)
 
     if N < 4:
-        print_usage_and_exit("N must be at least 4")
+        print("N must be at least 4")
+        sys.exit(1)
 
     return N
 
@@ -48,7 +51,7 @@ def solve_nqueens(N):
 
 def main():
     if len(sys.argv) != 2:
-        print_usage_and_exit("Usage: nqueens N")
+        print_usage_and_exit()
 
     N = is_valid(sys.argv[1])
     solutions = solve_nqueens(N)
