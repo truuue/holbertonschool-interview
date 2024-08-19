@@ -1,8 +1,8 @@
 #!/usr/bin/node
 
-const request = require("request");
+const request = require('request');
 
-function fetchCharacter(characterUrl) {
+function fetchCharacter (characterUrl) {
   return new Promise((resolve, reject) => {
     request(characterUrl, function (error, response, body) {
       if (error) {
@@ -14,12 +14,12 @@ function fetchCharacter(characterUrl) {
   });
 }
 
-async function fetchCharactersInOrder(movieId) {
+async function fetchCharactersInOrder (movieId) {
   const url = `https://swapi-api.hbtn.io/api/films/${movieId}/`;
 
   request(url, async function (error, response, body) {
     if (error) {
-      console.error("Error:", error);
+      console.error('Error:', error);
       return;
     }
 
@@ -31,7 +31,7 @@ async function fetchCharactersInOrder(movieId) {
         const characterName = await fetchCharacter(characters[i]);
         console.log(characterName);
       } catch (error) {
-        console.error("Error fetching character:", error);
+        console.error('Error fetching character:', error);
       }
     }
   });
