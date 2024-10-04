@@ -1,92 +1,172 @@
-#include <string.h>
+#include "holberton.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <unistd.h>
 #include <ctype.h>
-/**
- * _isnumber - checks if string is number
- *
- * @s: string
- *
- * Return: 1 if number, 0 if not
- */
-int _isnumber(char *s)
-{
-	int i, check, d;
+#include <string.h>
 
-	d = 0, check = 1;
-	for (i = 0; *(s + i) != 0; i++)
+/**
+ * is_digit - Checks if a string contains only digits.
+ * @s: The string to check.
+ *
+ * Return: 1 if all characters are digits, 0 otherwise.
+ */
+int is_digit(char *s)
+{
+	int i = 0;
+
+	while (s[i])
 	{
-		d = isdigit(*(s + i));
-		if (d == 0)
-		{
-			check = 0;
-			break;
-		}
+		if (s[i] < '0' || s[i] > '9')
+			return (0);
+		i++;
 	}
-	return (check);
+	return (1);
 }
 
 /**
- * _callocX - reserves memory initialized to 0
+ * _strlen - Calculates the length of a string.
+ * @s: The string.
  *
- * @nmemb: # of bytes
- *
- * Return: pointer
+ * Return: The length of the string.
  */
-char *_callocX(unsigned int nmemb)
+int _strlen(char *s)
 {
-	unsigned int i;
-	char *p;
+	int len = 0;
 
-	p = malloc(nmemb + 1);
-	if (p == 0)
-		return (0);
-	for (i = 0; i < nmemb; i++)
-		p[i] = '0';
-	p[i] = '\0';
-	return (p);
+	while (s[len])
+		len++;
+	return (len);
 }
 
 /**
- * main - multiplies inf numbers
- *
- * @argc: # of cmd line args
- * @argv: cmd line args
- * Return: No return
+ * _multiply - Multiplies two digits and adds the result to the appropriate position.
+ * @num1: The first string of digits.
+ * @num2: The second string of digits.
+ * @result: The result array.
  */
-int main(int argc, char **argv)
+void _multiply(char *num1, char *num2, int *result)
 {
-	int i, j, l1, l2, lful, mul, add, ten, ten2, tl, zer = 0;
-	char *res;
+	int len1 = _strlen(num1);
+	int len2 = _strlen(num2);
+	int i, j, mul, sum;
 
-	if (argc != 3 || _isnumber(argv[1]) == 0 || _isnumber(argv[2]) == 0)
-		printf("Error\n"), exit(98);
-	if (atoi(argv[1]) == 0 || atoi(argv[2]) == 0)
-		printf("0\n"), exit(0);
-	l1 = strlen(argv[1]), l2 = strlen(argv[2]);
-	lful = l1 + l2;
-	res = _callocX(lful);
-	if (res == 0)
-		printf("Error\n"), exit(98);
-	for (i = l2 - 1; i >= 0; i--)
+	for (i = len1 - 1; i >= 0; i--)
 	{
-		ten = 0, ten2 = 0;
-		for (j = l1 - 1; j >= 0; j--)
+		for (j = len2 - 1; j >= 0; j--)
 		{
-			tl = i + j + 1;
-			mul = (argv[1][j] - '0') * (argv[2][i] - '0') + ten;
-			ten = mul / 10;
-			add = (res[tl] - '0') + (mul % 10) + ten2;
-			ten2 = add / 10;
-			res[tl] = (add % 10) + '0';
+			mul = (num1[i] - '0') * (num2[j] - '0');
+			sum = mul + result[i + j + 1];
+			result[i + j + 1] = sum % 10;
+			result[i + j] += sum / 10;
 		}
-		res[tl - 1] = (ten + ten2) + '0';
 	}
-	if (res[0] == '0')
-		zer = 1;
-	for (; zer < lful; zer++)
-		printf("%c", res[zer]);
-	printf("\n");
-	free(res);
+}
+
+/**
+ * mul - Multiplies two positive numbers.
+ * @num1: The first string of digits.
+ * @num2: The second string of digits.
+ *
+ * Return: The resulting multiplication string.
+ */
+char *mul(char *num1, char *num2)
+{
+	int len1 = _strlen(num1);
+	int len2 = _strlen(num2);
+	int len = len1 + len2;
+	int *result;
+	char *str;
+	int i;
+	int start = 0;
+
+	result = malloc(sizeof(int) * len);
+	if (result == NULL)
+		return (NULL);
+
+	for (i = 0; i < len; i++)
+		result[i] = 0;
+
+	_multiply(num1, num2, result);
+
+	/* Allocate the resulting string */
+	str = malloc(sizeof(char) * (len + 1));
+	if (str == NULL)
+	{
+		free(result);
+		return (NULL);
+	}
+
+	/* Convert the results to characters */
+	for (i = 0; i < len; i++)
+		str[i] = result[i] + '0';
+	str[len] = '\0';
+
+	free(result);
+
+	/* Remove leading zeros */
+	while (str[start] == '0' && start < len - 1)
+		start++;
+
+	/* Shift the string to remove leading zeros */
+	for (i = 0; i < len - start; i++)
+		str[i] = str[i + start];
+	str[i] = '\0';
+
+	return (str);
+}
+
+/**
+ * main - Entry point of the program.
+ * @argc: Number of arguments.
+ * @argv: Array of arguments.
+ *
+ * Return: 0 on success, 98 on error.
+ */
+int main(int argc, char *argv[])
+{
+	char *result;
+	int i; /* Declaration of 'i' to be used in the for loop */
+
+	if (argc != 3)
+	{
+		_putchar('E');
+		_putchar('r');
+		_putchar('r');
+		_putchar('o');
+		_putchar('r');
+		_putchar('\n');
+		exit(98);
+	}
+
+	if (!is_digit(argv[1]) || !is_digit(argv[2]))
+	{
+		_putchar('E');
+		_putchar('r');
+		_putchar('r');
+		_putchar('o');
+		_putchar('r');
+		_putchar('\n');
+		exit(98);
+	}
+
+	result = mul(argv[1], argv[2]);
+	if (result == NULL)
+	{
+		_putchar('E');
+		_putchar('r');
+		_putchar('r');
+		_putchar('o');
+		_putchar('r');
+		_putchar('\n');
+		exit(98);
+	}
+
+	/* Display the result */
+	for (i = 0; result[i]; i++)
+		_putchar(result[i]);
+	_putchar('\n');
+
+	free(result);
 	return (0);
 }
