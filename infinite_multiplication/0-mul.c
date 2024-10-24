@@ -1,107 +1,92 @@
-#include "holberton.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <ctype.h>
 #include <string.h>
-
+#include <stdlib.h>
+#include <stdio.h>
+#include <ctype.h>
 /**
- * is_digit - checks if a string is composed only of digits.
- * @str: string to check.
+ * _isnumber - checks if string is number
  *
- * Return: 1 if string is valid (only digits), 0 otherwise.
+ * @s: string
+ *
+ * Return: 1 if number, 0 if not
  */
-int is_digit(char *str)
+int _isnumber(char *s)
 {
-    int i = 0;
-    while (str[i])
-    {
-        if (!isdigit(str[i]))
-            return (0);
-        i++;
-    }
-    return (1);
+	int i, check, d;
+
+	d = 0, check = 1;
+	for (i = 0; *(s + i) != 0; i++)
+	{
+		d = isdigit(*(s + i));
+		if (d == 0)
+		{
+			check = 0;
+			break;
+		}
+	}
+	return (check);
 }
 
 /**
- * print_error - prints an error message and exits with status 98.
+ * _callocX - reserves memory initialized to 0
+ *
+ * @nmemb: # of bytes
+ *
+ * Return: pointer
  */
-void print_error(void)
+char *_callocX(unsigned int nmemb)
 {
-    printf("Error\n");
-    exit(98);
+	unsigned int i;
+	char *p;
+
+	p = malloc(nmemb + 1);
+	if (p == 0)
+		return (0);
+	for (i = 0; i < nmemb; i++)
+		p[i] = '0';
+	p[i] = '\0';
+	return (p);
 }
 
 /**
- * multiply - multiplies two numbers represented as strings.
- * @num1: first number as a string.
- * @num2: second number as a string.
+ * main - multiplies inf numbers
  *
- * Return: the result of the multiplication as a string.
+ * @argc: # of cmd line args
+ * @argv: cmd line args
+ * Return: No return
  */
-char *multiply(char *num1, char *num2)
+int main(int argc, char **argv)
 {
-    int len1 = strlen(num1);
-    int len2 = strlen(num2);
-    int *result = calloc(len1 + len2, sizeof(int));
-    char *final_result;
-    int i, j, carry, sum, k = 0;
+	int i, j, l1, l2, lful, mul, add, ten, ten2, tl, zer = 0;
+	char *res;
 
-    if (!result)
-        print_error();
-
-    /* Perform multiplication like in elementary school */
-    for (i = len1 - 1; i >= 0; i--)
-    {
-        for (j = len2 - 1; j >= 0; j--)
-        {
-            int mul = (num1[i] - '0') * (num2[j] - '0');
-            int pos1 = i + j;
-            int pos2 = i + j + 1;
-            sum = mul + result[pos2];
-            result[pos2] = sum % 10;
-            result[pos1] += sum / 10;
-        }
-    }
-
-    /* Convert result to a string */
-    final_result = malloc(len1 + len2 + 1);
-    if (!final_result)
-        print_error();
-
-    for (i = 0; i < len1 + len2; i++)
-    {
-        if (!(k == 0 && result[i] == 0))
-            final_result[k++] = result[i] + '0';
-    }
-    final_result[k] = '\0';
-
-    free(result);
-    return (k == 0) ? strdup("0") : final_result;
-}
-
-/**
- * main - multiplies two numbers given as arguments.
- * @argc: argument count.
- * @argv: argument vector.
- *
- * Return: 0 on success, or 98 on error.
- */
-int main(int argc, char *argv[])
-{
-    char *num1, *num2, *result;
-
-    if (argc != 3)
-        print_error();
-
-    num1 = argv[1];
-    num2 = argv[2];
-
-    if (!is_digit(num1) || !is_digit(num2))
-        print_error();
-
-    result = multiply(num1, num2);
-    printf("%s\n", result);
-
-    free(result);
-    return (0);
+	if (argc != 3 || _isnumber(argv[1]) == 0 || _isnumber(argv[2]) == 0)
+		printf("Error\n"), exit(98);
+	if (atoi(argv[1]) == 0 || atoi(argv[2]) == 0)
+		printf("0\n"), exit(0);
+	l1 = strlen(argv[1]), l2 = strlen(argv[2]);
+	lful = l1 + l2;
+	res = _callocX(lful);
+	if (res == 0)
+		printf("Error\n"), exit(98);
+	for (i = l2 - 1; i >= 0; i--)
+	{
+		ten = 0, ten2 = 0;
+		for (j = l1 - 1; j >= 0; j--)
+		{
+			tl = i + j + 1;
+			mul = (argv[1][j] - '0') * (argv[2][i] - '0') + ten;
+			ten = mul / 10;
+			add = (res[tl] - '0') + (mul % 10) + ten2;
+			ten2 = add / 10;
+			res[tl] = (add % 10) + '0';
+		}
+		res[tl - 1] = (ten + ten2) + '0';
+	}
+	if (res[0] == '0')
+		zer = 1;
+	for (; zer < lful; zer++)
+		printf("%c", res[zer]);
+	printf("\n");
+	free(res);
+	return (0);
 }
