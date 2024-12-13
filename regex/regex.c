@@ -1,5 +1,7 @@
 #include "regex.h"
 
+static int match_star(char c, char const *pattern, char const *str);
+
 /**
  * match_here - Vérifie si pattern correspond à str à partir de la position actuelle
  * @str: Chaîne à analyser
