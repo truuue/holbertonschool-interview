@@ -3,7 +3,7 @@
 static int match_star(char c, char const *pattern, char const *str);
 
 /**
- * match_here - Verifie si pattern correspond à str a partir de la position actuelle
+ * match_here - Verifie si pattern correspond à str
  * @str: Chaine a analyser
  * @pattern: Expression reguliere
  * Return: 1 si correspond, 0 sinon
@@ -28,7 +28,7 @@ static int match_here(char const *str, char const *pattern)
  * match_star - Gere le caractere * dans le pattern
  * @c: Caractere precede par *
  * @pattern: Reste du pattern apres *
- * @str: Chaîne à analyser
+ * @str: Chaine a analyser
  * Return: 1 si correspond, 0 sinon
  */
 static int match_star(char c, char const *pattern, char const *str)
